@@ -18,8 +18,10 @@ jobs:
 
       - name: Set active Xcode path
         run: |
-          XCODE_VERSION=$(cat versions.json | python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["xcode"]);')
-          sudo xcode-select -s /Applications/Xcode_$XCODE_VERSION.app/Contents/Developer
+          XV=$(basename $(ls -d /Applications/Xcode*.app | sort -V | tail -1) .app | sed 's/Xcode_//')
+          echo "Installed Xcode: $XV"
+          python3 -c "import json;p='versions.json';d=json.load(open(p));d['xcode']='$XV';json.dump(d,open(p,'w'))"
+          sudo xcode-select -s "/Applications/Xcode_$XV.app/Contents/Developer"
 
       - name: Create canonical source directory
         run: |
