@@ -22,6 +22,7 @@ jobs:
           echo "Installed Xcode: $XV"
           case $XV in *.*.*) ;; *.*) XV="$XV.0";; esac
           python3 -c "import json;p='versions.json';d=json.load(open(p));d['xcode']='$XV';json.dump(d,open(p,'w'))"
+          sudo ln -sfn "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)" "/Applications/Xcode_$XV.app"
           sudo xcode-select -s "/Applications/Xcode_$XV.app/Contents/Developer"
 
       - name: Create canonical source directory
