@@ -22,13 +22,11 @@ jobs:
 
       - name: Set active Xcode path
         run: |
-          DIR=$(ls -d /Applications/Xcode_*.app 2>/dev/null | tail -1)
+          DIR=$(ls -d /Applications/Xcode_26.*.app 2>/dev/null | tail -1)
           XV=$(basename "$DIR" .app | sed 's/Xcode_//')
-          case "$XV" in *.*.*) ;; *.*) XV="$XV.0";; esac
-          echo "Using Xcode $XV from $DIR"
-          if [ "$DIR" != "/Applications/Xcode_$XV.app" ]; then sudo mv "$DIR" "/Applications/Xcode_$XV.app"; fi
+          echo "Using Xcode $XV at $DIR"
           python3 -c "import json;p='versions.json';d=json.load(open(p));d['xcode']='$XV';json.dump(d,open(p,'w'))"
-          sudo xcode-select -s "/Applications/Xcode_$XV.app/Contents/Developer"
+          sudo xcode-select -s "$DIR/Contents/Developer"
 
       - name: Create canonical source directory
         run: |
