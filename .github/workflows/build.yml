@@ -11,6 +11,9 @@ jobs:
     runs-on: macos-26
 
     steps:
+      - name: Redirect submodule URLs
+        run: git config --global url."https://github.com/Swiftgram/".insteadOf "https://github.com/sayhvh/"
+
       - uses: actions/checkout@v2
         with:
           submodules: 'recursive'
